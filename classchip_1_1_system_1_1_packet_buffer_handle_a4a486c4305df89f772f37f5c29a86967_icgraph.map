@@ -1,0 +1,4 @@
+<map id="chip::System::PacketBufferHandle::NewWithData" name="chip::System::PacketBufferHandle::NewWithData">
+<area shape="rect" id="node1" title="Allocates a packet buffer with initial contents." alt="" coords="249,5,444,47"/>
+<area shape="rect" id="node2" href="$namespacechip_1_1_message_packet_buffer.html#a5f6fec1dda2ed93f1705f8880dbb49f5" title="Allocates a packet buffer with initial contents." alt="" coords="5,5,201,47"/>
+</map>
