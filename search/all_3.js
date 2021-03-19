@@ -57,7 +57,7 @@ var searchData=
   ['bitflags_3c_20timerstateflag_20_3e_420',['BitFlags&lt; TimerStateFlag &gt;',['../classchip_1_1_bit_flags.html',1,'chip']]],
   ['bitmapobjectpool_421',['BitMapObjectPool',['../classchip_1_1_bit_map_object_pool.html',1,'chip::BitMapObjectPool&lt; T, N &gt;'],['../classchip_1_1_bit_map_object_pool.html#ae5375f3fdb8887966b09a98af8900bbc',1,'chip::BitMapObjectPool::BitMapObjectPool()']]],
   ['bitpackedflags_422',['BitPackedFlags',['../classmdns_1_1_minimal_1_1_bit_packed_flags.html',1,'mdns::Minimal::BitPackedFlags'],['../classmdns_1_1_minimal_1_1_bit_packed_flags.html#ae17b85af15470fa0782b336fd62f03da',1,'mdns::Minimal::BitPackedFlags::BitPackedFlags()']]],
-  ['ble_423',['BLE',['../classchip_1_1_transport_1_1_b_l_e.html',1,'chip::Transport::BLE'],['../namespace_ble.html',1,'Ble'],['../classchip_1_1_transport_1_1_peer_address.html#ab2ce983632dfd2485743279f3fce4d1d',1,'chip::Transport::PeerAddress::BLE()']]],
+  ['ble_423',['BLE',['../classchip_1_1_transport_1_1_b_l_e.html',1,'chip::Transport::BLE'],['../namespace_ble.html',1,'Ble'],['../classchip_1_1_transport_1_1_peer_address.html#ab2ce983632dfd2485743279f3fce4d1d',1,'chip::Transport::PeerAddress::BLE()'],['../namespacechip_1_1_device_layer_1_1_internal.html#a9ca6d831bfa5b7208045a503f5bb4158',1,'chip::DeviceLayer::Internal::ble()']]],
   ['ble_2ecpp_424',['BLE.cpp',['../_b_l_e_8cpp.html',1,'']]],
   ['ble_2eh_425',['Ble.h',['../ble_2_ble_8h.html',1,'(Global Namespace)'],['../transport_2_ble_8h.html',1,'(Global Namespace)']]],
   ['ble_5fadapter_5fprint_426',['ble_adapter_print',['../classchip_1_1_chip_bluez_mgr_1_1_bluez_manager.html#ad54fe5a5dc61dedf92a7adb0c9204d6e',1,'chip::ChipBluezMgr::BluezManager']]],
