@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Connected Home over IP
-   &#160;<span id="projectnumber">01ce6aa</span>
+   &#160;<span id="projectnumber">be0e3b5</span>
    </div>
   </td>
  </tr>
@@ -403,7 +403,7 @@ $(document).ready(function(){initNavTree('_system_packet_buffer_8h_source.html',
 <div class="line"><a name="l00648"></a><span class="lineno">  648</span>&#160;    <span class="keyword">static</span> <a class="code" href="classchip_1_1_system_1_1_packet_buffer_handle.html">PacketBufferHandle</a> <a class="code" href="namespacechip_1_1_message_packet_buffer.html#a5f6fec1dda2ed93f1705f8880dbb49f5">NewWithData</a>(<span class="keyword">const</span> <span class="keywordtype">void</span> * aData, <span class="keywordtype">size_t</span> aDataSize, uint16_t aAdditionalSize = 0,</div>
 <div class="line"><a name="l00649"></a><span class="lineno">  649</span>&#160;                                          uint16_t aReservedSize = <a class="code" href="classchip_1_1_system_1_1_packet_buffer.html#ae4875bbfd65cdf2f011b0a1d2c21aece">PacketBuffer::kDefaultHeaderReserve</a>);</div>
 <div class="line"><a name="l00650"></a><span class="lineno">  650</span>&#160; </div>
-<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    <a class="code" href="classchip_1_1_system_1_1_packet_buffer_handle.html">PacketBufferHandle</a> CloneData();</div>
+<div class="line"><a name="l00656"></a><span class="lineno">  656</span>&#160;    <a class="code" href="classchip_1_1_system_1_1_packet_buffer_handle.html">PacketBufferHandle</a> CloneData() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00657"></a><span class="lineno">  657</span>&#160; </div>
 <div class="line"><a name="l00672"></a><span class="lineno"><a class="line" href="classchip_1_1_system_1_1_packet_buffer_handle.html#a12396d2a22f79e43ffc279991cdddb99">  672</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classchip_1_1_system_1_1_packet_buffer_handle.html#a12396d2a22f79e43ffc279991cdddb99">Check</a>()<span class="keyword"> const</span></div>
 <div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;<span class="keyword">    </span>{</div>
@@ -571,11 +571,11 @@ $(document).ready(function(){initNavTree('_system_packet_buffer_8h_source.html',
 <div class="ttc" id="a_c_h_i_p_error_8h_html_a68c26998d841bb7b34f0d32093957a78"><div class="ttname"><a href="_c_h_i_p_error_8h.html#a68c26998d841bb7b34f0d32093957a78">CHIP_ERROR_INTERNAL</a></div><div class="ttdeci">#define CHIP_ERROR_INTERNAL</div><div class="ttdoc">Internal error.</div><div class="ttdef"><b>Definition:</b> CHIPError.h:1630</div></div>
 <div class="ttc" id="a_c_h_i_p_device_controller-_j_n_i_8cpp_html_a0c1b800f8e945f2a4544cb4008ffb418"><div class="ttname"><a href="_c_h_i_p_device_controller-_j_n_i_8cpp.html#a0c1b800f8e945f2a4544cb4008ffb418">buffer</a></div><div class="ttdeci">System::PacketBufferHandle buffer</div><div class="ttdef"><b>Definition:</b> CHIPDeviceController-JNI.cpp:487</div></div>
 <div class="ttc" id="aclasschip_1_1_system_1_1_packet_buffer_html_ac9c9e4fe5907e0a1c15ac5132f7c1371"><div class="ttname"><a href="classchip_1_1_system_1_1_packet_buffer.html#ac9c9e4fe5907e0a1c15ac5132f7c1371">chip::System::PacketBuffer::TotalLength</a></div><div class="ttdeci">uint16_t TotalLength() const</div><div class="ttdoc">Get the total length of packet data in the buffer chain.</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.h:240</div></div>
+<div class="ttc" id="aclasschip_1_1_system_1_1_packet_buffer_handle_html_afc5bd9c4127df0de63128717d304e9f1"><div class="ttname"><a href="classchip_1_1_system_1_1_packet_buffer_handle.html#afc5bd9c4127df0de63128717d304e9f1">chip::System::PacketBufferHandle::CloneData</a></div><div class="ttdeci">PacketBufferHandle CloneData() const</div><div class="ttdoc">Creates a copy of a packet buffer (or chain).</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.cpp:638</div></div>
 <div class="ttc" id="aclasschip_1_1_encoding_1_1_packet_buffer_writer_util_html"><div class="ttname"><a href="classchip_1_1_encoding_1_1_packet_buffer_writer_util.html">chip::Encoding::PacketBufferWriterUtil</a></div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.h:741</div></div>
 <div class="ttc" id="anamespacechip_html_a5b9c196fdd524001f536e328b47e04fa"><div class="ttname"><a href="namespacechip.html#a5b9c196fdd524001f536e328b47e04fa">chip::min</a></div><div class="ttdeci">constexpr const _T &amp; min(const _T &amp;a, const _T &amp;b)</div><div class="ttdef"><b>Definition:</b> CodeUtils.h:123</div></div>
 <div class="ttc" id="aclasschip_1_1_system_1_1_packet_buffer_html_ae4875bbfd65cdf2f011b0a1d2c21aece"><div class="ttname"><a href="classchip_1_1_system_1_1_packet_buffer.html#ae4875bbfd65cdf2f011b0a1d2c21aece">chip::System::PacketBuffer::kDefaultHeaderReserve</a></div><div class="ttdeci">static constexpr uint16_t kDefaultHeaderReserve</div><div class="ttdoc">The number of bytes to reserve in a network packet buffer to contain all the possible protocol encaps...</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.h:158</div></div>
 <div class="ttc" id="a_code_utils_8h_html"><div class="ttname"><a href="_code_utils_8h.html">CodeUtils.h</a></div></div>
-<div class="ttc" id="aclasschip_1_1_system_1_1_packet_buffer_handle_html_ac86921e5b97251e43494e25abfda1a99"><div class="ttname"><a href="classchip_1_1_system_1_1_packet_buffer_handle.html#ac86921e5b97251e43494e25abfda1a99">chip::System::PacketBufferHandle::CloneData</a></div><div class="ttdeci">PacketBufferHandle CloneData()</div><div class="ttdoc">Creates a copy of a packet buffer (or chain).</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.cpp:638</div></div>
 <div class="ttc" id="aclasschip_1_1_encoding_1_1_packet_buffer_writer_base_html"><div class="ttname"><a href="classchip_1_1_encoding_1_1_packet_buffer_writer_base.html">chip::Encoding::PacketBufferWriterBase</a></div><div class="ttdoc">BufferWriter backed by packet buffer.</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.h:764</div></div>
 <div class="ttc" id="a_system_packet_buffer_8cpp_html_a3a1e906d8e912ff6cdee62616ab63791"><div class="ttname"><a href="_system_packet_buffer_8cpp.html#a3a1e906d8e912ff6cdee62616ab63791">LOCK_BUF_POOL</a></div><div class="ttdeci">#define LOCK_BUF_POOL()</div><div class="ttdef"><b>Definition:</b> SystemPacketBuffer.cpp:77</div></div>
 <div class="ttc" id="aclasschip_1_1_inet_1_1_i_p_end_point_basis_html"><div class="ttname"><a href="classchip_1_1_inet_1_1_i_p_end_point_basis.html">chip::Inet::IPEndPointBasis</a></div><div class="ttdoc">Objects of this class represent non-instantiable IP protocol endpoints.</div><div class="ttdef"><b>Definition:</b> IPEndPointBasis.h:51</div></div>
@@ -666,7 +666,7 @@ $(document).ready(function(){initNavTree('_system_packet_buffer_8h_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d501334aeb1b78ad67cd3c72c37b1e87.html">system</a></li><li class="navelem"><a class="el" href="_system_packet_buffer_8h.html">SystemPacketBuffer.h</a></li>
-    <li class="footer">Generated on Tue Mar 23 2021 18:19:44 for Connected Home over IP by
+    <li class="footer">Generated on Wed Mar 24 2021 10:25:29 for Connected Home over IP by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
