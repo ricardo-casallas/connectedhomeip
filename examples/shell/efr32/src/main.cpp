@@ -20,7 +20,6 @@
 #include <bsp.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -28,24 +27,18 @@
 #include <FreeRTOS.h>
 #include <mbedtls/threading.h>
 
-#include <platform/CHIPDeviceLayer.h>
-#include <platform/KeyValueStoreManager.h>
+// #include <platform/CHIPDeviceLayer.h>
+// #include <platform/KeyValueStoreManager.h>
+// #include <support/CHIPMem.h>
+// #include <support/CHIPPlatformMemory.h>
+#include <ChipShellCollection.h>
+#include <lib/shell/shell_core.h>
 #include <support/CHIPMem.h>
-#include <support/CHIPPlatformMemory.h>
-
-#include <AppTask.h>
+#include <lib/support/CHIPPlatformMemory.h>
+#include <platform/CHIPDeviceLayer.h>
 
 #include "AppConfig.h"
 #include "init_efrPlatform.h"
-#include <app/server/Server.h>
-
-#ifdef HEAP_MONITORING
-#include "MemMonitoring.h"
-#endif
-
-#if DISPLAY_ENABLED
-#include "lcd.h"
-#endif
 
 #if CHIP_ENABLE_OPENTHREAD
 #include <mbedtls/platform.h>
@@ -84,6 +77,12 @@ void appError(int err)
         ;
 }
 
+///FIXME
+unsigned int sleep(unsigned int seconds)
+{
+    return 0;
+}
+
 // ================================================================================
 // FreeRTOS Callbacks
 // ================================================================================
@@ -102,8 +101,6 @@ extern "C" void vApplicationIdleHook(void)
 
 int main(void)
 {
-    int ret = CHIP_ERROR_MAX;
-
     EFR32_LOG("==================================================");
     EFR32_LOG("chip-efr32-shell-example starting");
     EFR32_LOG("==================================================");

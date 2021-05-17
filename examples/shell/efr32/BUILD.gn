@@ -38,6 +38,8 @@ efr32_sdk("sdk") {
     "${efr32_project_dir}/include",
     "${examples_plat_dir}",
     "${examples_plat_dir}/${efr32_family}/${efr32_board}",
+    "${openthread_root}/src/core",
+    "${openthread_root}/examples/platforms/efr32/src"
   ]
 
   defines = [
@@ -64,7 +66,7 @@ efr32_executable("chip-shell") {
     "${chip_root}/examples/shell/shell_common:shell_common",
   ]
 
-  #cflags = [ "-Wconversion" ]
+#   cflags = [ "-Wconversion" ]
   
   if (efr32_family == "efr32mg12") {
     ldscript = "${examples_plat_dir}/ldscripts/efr32-MG12P.ld"
