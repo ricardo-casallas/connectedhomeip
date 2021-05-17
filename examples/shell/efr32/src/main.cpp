@@ -123,9 +123,9 @@ int main(void)
     // cmd_base64_init();
     // cmd_device_init();
     // cmd_btp_init();
-    // cmd_otcli_init();
+    cmd_otcli_init();
     cmd_ping_init();
-    // cmd_send_init();
+    cmd_send_init();
 
     xTaskCreate(shell_task, "Shell_Task", SHELL_TASK_STACK_SIZE, nullptr, SHELL_TASK_PRIORITY, &sShellTaskHandle);
 
