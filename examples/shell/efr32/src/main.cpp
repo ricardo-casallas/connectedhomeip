@@ -119,10 +119,10 @@ int main(void)
     int ret = chip::Shell::streamer_init(chip::Shell::streamer_get());
     assert(ret == 0);
 
-    // cmd_misc_init();
-    // cmd_base64_init();
+    cmd_misc_init();
+    cmd_base64_init();
     // cmd_device_init();
-    // cmd_btp_init();
+    cmd_btp_init();
     cmd_otcli_init();
     cmd_ping_init();
     cmd_send_init();
