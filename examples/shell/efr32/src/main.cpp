@@ -27,18 +27,15 @@
 #include <FreeRTOS.h>
 #include <mbedtls/threading.h>
 
-// #include <platform/CHIPDeviceLayer.h>
-// #include <platform/KeyValueStoreManager.h>
-// #include <support/CHIPMem.h>
-// #include <support/CHIPPlatformMemory.h>
+#include <platform/CHIPDeviceLayer.h>
+#include <platform/KeyValueStoreManager.h>
+#include <support/CHIPMem.h>
+#include <support/CHIPPlatformMemory.h>
+
 #include <ChipShellCollection.h>
 #include <lib/shell/shell_core.h>
-#include <support/CHIPMem.h>
-#include <lib/support/CHIPPlatformMemory.h>
-#include <platform/CHIPDeviceLayer.h>
-
-#include "AppConfig.h"
-#include "init_efrPlatform.h"
+#include <AppConfig.h>
+#include <init_efrPlatform.h>
 
 #if CHIP_ENABLE_OPENTHREAD
 #include <mbedtls/platform.h>
@@ -61,7 +58,6 @@ using namespace ::chip::DeviceLayer;
 
 #define SHELL_TASK_STACK_SIZE 8192
 #define SHELL_TASK_PRIORITY 3
-static TaskHandle_t sShellTaskHandle;
 
 #define UNUSED_PARAMETER(a) (a = a)
 
@@ -98,36 +94,63 @@ extern "C" void vApplicationIdleHook(void)
 // Main Code
 // ================================================================================
 
+#define APP_TASK_STACK_SIZE (1536)
+static StackType_t appStack[APP_TASK_STACK_SIZE / sizeof(StackType_t)];
+static StaticTask_t appTaskStruct;
 
 int main(void)
 {
+    int err = CHIP_ERROR_MAX;
+
+    init_efrPlatform();
+    mbedtls_platform_set_calloc_free(CHIPPlatformMemoryCalloc, CHIPPlatformMemoryFree);
+
+    // Initialize mbedtls threading support on EFR32
+    THREADING_setup();
+
     EFR32_LOG("==================================================");
-    EFR32_LOG("chip-efr32-shell-example starting");
+    EFR32_LOG("chip-efr32-shell-example starting 1.0.0");
     EFR32_LOG("==================================================");
 
     EFR32_LOG("Init CHIP Stack");
 
-    init_efrPlatform();
-    // Initialize LEDs
-    // LEDWidget::InitGpio();
-    // sStatusLED.Init(SYSTEM_STATE_LED);
-    // sStatusLED.Set(true);
-
+    // Init Chip memory management before the stack
     chip::Platform::MemoryInit();
-    chip::DeviceLayer::PlatformMgr().InitChipStack();
-    chip::DeviceLayer::PlatformMgr().StartEventLoopTask();
-    int ret = chip::Shell::streamer_init(chip::Shell::streamer_get());
-    assert(ret == 0);
+    chip::DeviceLayer::PersistedStorage::KeyValueStoreMgrImpl().Init();
 
-    cmd_misc_init();
-    cmd_base64_init();
-    // cmd_device_init();
-    cmd_btp_init();
+    err = PlatformMgr().InitChipStack();
+    if (err != CHIP_NO_ERROR)
+    {
+        EFR32_LOG("PlatformMgr().InitChipStack() failed");
+        appError(err);
+    }
+
+    EFR32_LOG("Starting Platform Manager Event Loop");
+    err = PlatformMgr().StartEventLoopTask();
+    if (err != CHIP_NO_ERROR)
+    {
+        EFR32_LOG("PlatformMgr().StartEventLoopTask() failed");
+        appError(err);
+    }
+
+    err = chip::Shell::streamer_init(chip::Shell::streamer_get());
+    assert(err == 0);
+
+    // cmd_misc_init();
+    // cmd_base64_init();
+    // cmd_device_init(); // FIXME: Hard fault!
+    // cmd_btp_init();
     cmd_otcli_init();
     cmd_ping_init();
     cmd_send_init();
 
-    xTaskCreate(shell_task, "Shell_Task", SHELL_TASK_STACK_SIZE, nullptr, SHELL_TASK_PRIORITY, &sShellTaskHandle);
+    TaskHandle_t sAppTaskHandle = xTaskCreateStatic(shell_task, APP_TASK_NAME, ArraySize(appStack), NULL, 1, appStack, &appTaskStruct);
+    if (! sAppTaskHandle)
+    {
+        EFR32_LOG("MEMORY ERROR!!!");
+        err = CHIP_ERROR_NO_MEMORY;
+    }
 
     vTaskStartScheduler();
+    return err;
 }
