@@ -26,4 +26,5 @@ void cmd_misc_init(void);
 void cmd_otcli_init(void);
 void cmd_ping_init(void);
 void cmd_send_init(void);
+void cmd_server_init(void);
 }

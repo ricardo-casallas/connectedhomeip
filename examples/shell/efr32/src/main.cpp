@@ -58,6 +58,10 @@ using namespace ::chip::DeviceLayer;
 
 #define SHELL_TASK_STACK_SIZE 8192
 #define SHELL_TASK_PRIORITY 3
+static TaskHandle_t sShellTaskHandle;
+#define APP_TASK_STACK_SIZE (1536)
+static StackType_t appStack[APP_TASK_STACK_SIZE / sizeof(StackType_t)];
+static StaticTask_t appTaskStruct;
 
 #define UNUSED_PARAMETER(a) (a = a)
 
@@ -93,10 +97,6 @@ extern "C" void vApplicationIdleHook(void)
 // ================================================================================
 // Main Code
 // ================================================================================
-
-#define APP_TASK_STACK_SIZE (1536)
-static StackType_t appStack[APP_TASK_STACK_SIZE / sizeof(StackType_t)];
-static StaticTask_t appTaskStruct;
 
 int main(void)
 {
@@ -143,9 +143,12 @@ int main(void)
     cmd_otcli_init();
     cmd_ping_init();
     cmd_send_init();
+    cmd_server_init();
 
-    TaskHandle_t sAppTaskHandle = xTaskCreateStatic(shell_task, APP_TASK_NAME, ArraySize(appStack), NULL, 1, appStack, &appTaskStruct);
-    if (! sAppTaskHandle)
+    // xTaskCreate(shell_task, "Shell_Task", SHELL_TASK_STACK_SIZE, nullptr, SHELL_TASK_PRIORITY, &sShellTaskHandle);
+
+    sShellTaskHandle = xTaskCreateStatic(shell_task, APP_TASK_NAME, ArraySize(appStack), NULL, 1, appStack, &appTaskStruct);
+    if (! sShellTaskHandle)
     {
         EFR32_LOG("MEMORY ERROR!!!");
         err = CHIP_ERROR_NO_MEMORY;
