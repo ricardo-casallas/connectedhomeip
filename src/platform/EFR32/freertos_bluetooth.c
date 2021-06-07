@@ -17,8 +17,8 @@
  *    limitations under the License.
  */
 
-#include "AppConfig.h"
 #include <em_device.h>
+#include <platform/EFR32/Logging.h>
 #include <platform/EFR32/freertos_bluetooth.h>
 #include <stdint.h>
 #include <string.h>
