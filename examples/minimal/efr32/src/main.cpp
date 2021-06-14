@@ -115,7 +115,8 @@ int main(void)
         EFR32_LOG("PlatformMgr().InitChipStack() failed");
         appError(ret);
     }
-    chip::DeviceLayer::ConnectivityMgr().SetBLEDeviceName("EFR32_WINDOW");
+    chip::DeviceLayer::ConnectivityMgr().SetBLEDeviceName("EFR32_MINI");
+
 #if CHIP_ENABLE_OPENTHREAD
     EFR32_LOG("Initializing OpenThread stack");
     ret = ThreadStackMgr().InitThreadStack();
@@ -131,6 +132,16 @@ int main(void)
         EFR32_LOG("ConnectivityMgr().SetThreadDeviceType() failed");
         appError(ret);
     }
+
+    EFR32_LOG("Starting OpenThread task");
+    // Start OpenThread task
+    ret = ThreadStackMgrImpl().StartThreadTask();
+    if (ret != CHIP_NO_ERROR)
+    {
+        EFR32_LOG("ThreadStackMgr().StartThreadTask() failed");
+        appError(ret);
+    }
+
 #endif // CHIP_ENABLE_OPENTHREAD
 
     EFR32_LOG("Starting Platform Manager Event Loop");
@@ -141,21 +152,8 @@ int main(void)
         appError(ret);
     }
 
-#if CHIP_ENABLE_OPENTHREAD
-    EFR32_LOG("Starting OpenThread task");
-
-    // Start OpenThread task
-    ret = ThreadStackMgrImpl().StartThreadTask();
-    if (ret != CHIP_NO_ERROR)
-    {
-        EFR32_LOG("ThreadStackMgr().StartThreadTask() failed");
-        appError(ret);
-    }
-#endif // CHIP_ENABLE_OPENTHREAD
-
-
     EFR32_LOG("Starting App Task");
-    ret = AppTask::Instance().Start();
+    ret = AppTask::Instance().Init();
     if (ret != CHIP_NO_ERROR)
     {
         EFR32_LOG("GetAppTask().Init() failed");

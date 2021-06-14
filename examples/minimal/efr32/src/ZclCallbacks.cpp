@@ -32,7 +32,7 @@ using namespace ::chip;
 void emberAfPostAttributeChangeCallback(EndpointId endpoint, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
                                         uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
 {
-    EFR32_LOG("CALLBACK: PostAttributeChange");
+    ///EFR32_LOG("CALLBACK: PostAttributeChange");
 }
 
 /** @brief Window Covering Cluster Init

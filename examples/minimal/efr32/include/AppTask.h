@@ -28,7 +28,8 @@ class AppTask
 {
 public:
     static AppTask & Instance();
-    int Start();
+    int Init();
+    // int Start();
 
 private:
     static AppTask sInstance;
@@ -42,5 +43,4 @@ private:
     StaticTask_t mStruct;
 
     AppTask() = default;
-    int Init();
 };

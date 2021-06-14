@@ -19,41 +19,52 @@ AppTask & AppTask::Instance()
 
 int AppTask::Init()
 {
+    // Device Configuration
+    ButtonHandler::Instance().Init(AppTask::OnButton);
+
     mHandle = xTaskCreateStatic(AppTask::Main, APP_TASK_NAME, ArraySize(mStack), NULL, 1, mStack, &mStruct);
     if (!mHandle)
     {
         EFR32_LOG("AppTask initialization ERROR");
     }
 
-    InitServer();
-
-    // Device Configuration
-    chip::DeviceLayer::ConfigurationMgr().LogDeviceConfig();
-    SetDeviceName("EFR32WindowCoverDemo._chip._udp.local.");
-
-    ButtonHandler::Instance().Init(AppTask::OnButton);
-
-    return CHIP_NO_ERROR;
-}
-
-
-int AppTask::Start()
-{
-    Init();
     return CHIP_NO_ERROR;
 }
 
 
 void AppTask::Main(void *param)
 {
+    uint64_t lastChangeTimeUS = 0;
+    uint64_t nextChangeTimeUS = 0;
+    uint64_t nowUS = 0;
+    
+    InitServer();
+
+    EFR32_LOG("Current Firmware Version: %s", CHIP_DEVICE_CONFIG_DEVICE_FIRMWARE_REVISION_STRING);
+    chip::DeviceLayer::ConfigurationMgr().LogDeviceConfig();
+
+    EFR32_LOG("App Task started");
+    SetDeviceName("EFR32MinimalDemo._chip._udp.local.");
+
     while (true)
     {
         sCount += 1;
-        EFR32_LOG("Minimal running... %u", sCount);
-        sleep(2);
+        if(0 == sCount % 20)
+        {
+            EFR32_LOG("Minimal running... %u", sCount);
+        }
+        sleep(1);
         if (sCount > 99)
         {
             sCount = 0;
+        }
+
+        nowUS = chip::System::Platform::Layer::GetClock_Monotonic();
+        nextChangeTimeUS = lastChangeTimeUS + 5 * 1000 * 1000UL;
+        if (nowUS > nextChangeTimeUS)
+        {
+            PublishService();
+            lastChangeTimeUS = nowUS;
         }
     }
 }
