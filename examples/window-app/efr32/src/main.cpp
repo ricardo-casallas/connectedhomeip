@@ -33,9 +33,8 @@
 #include <support/CHIPMem.h>
 #include <support/CHIPPlatformMemory.h>
 
-#include <AppTask.h>
+#include <WindowAppEFR32.h>
 
-#include "AppConfig.h"
 #include "init_efrPlatform.h"
 #include <app/server/Server.h>
 
@@ -64,6 +63,8 @@
 using namespace ::chip;
 using namespace ::chip::Inet;
 using namespace ::chip::DeviceLayer;
+using example::efr32::WindowApp;
+
 
 #define UNUSED_PARAMETER(a) (a = a)
 
@@ -162,7 +163,7 @@ int main(void)
 #endif // CHIP_ENABLE_OPENTHREAD
 
     EFR32_LOG("Starting App Task");
-    ret = AppTask::Instance().Start();
+    ret = WindowApp::Instance().Init();
     if (ret != CHIP_NO_ERROR)
     {
         EFR32_LOG("GetAppTask().Init() failed");

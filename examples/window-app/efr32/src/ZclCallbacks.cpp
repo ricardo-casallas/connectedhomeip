@@ -20,120 +20,70 @@
  *   This file implements the handler for data model messages.
  */
 
+#include <WindowAppEFR32.h>
 #include <AppConfig.h>
-#include <AppTask.h>
 #include <app/Command.h>
 #include <app/common/gen/attribute-id.h>
 #include <app/common/gen/cluster-id.h>
 #include <app/util/af-types.h>
 #include <app/util/af.h>
+#include <app/clusters/window-covering-server/window-covering-server.h>
 
 using namespace ::chip;
+using namespace example::efr32;
 
 void emberAfPostAttributeChangeCallback(EndpointId endpoint, ClusterId clusterId, AttributeId attributeId, uint8_t mask,
                                         uint16_t manufacturerCode, uint8_t type, uint16_t size, uint8_t * value)
 {
-    if (clusterId != ZCL_WINDOW_COVERING_CLUSTER_ID)
-    {
+    EFR32_LOG("ATTRIBUTE CHANGE, ep:%u, cluster:%04x, attr:%04x, type:%02x", endpoint, clusterId, attributeId, type);
+
+    if(ZCL_WINDOW_COVERING_CLUSTER_ID == clusterId) {
+        WindowApp &app = WindowApp::Instance();
+        WindowCover &cover = WindowCover::Instance();
+        uint16_t current;
+        uint16_t target;
+
+        switch(attributeId)
+        {
+        case ZCL_WC_TYPE_ATTRIBUTE_ID:
+            app.PostEvent(example::WindowEvent::CoverTypeChange);
+            break;
+
+        case ZCL_WC_CURRENT_POSITION_LIFT_PERCENT100_THS_ATTRIBUTE_ID:
+            app.PostEvent(example::WindowEvent::CoverLiftChanged);
+            break;
+
+        case ZCL_WC_CURRENT_POSITION_TILT_PERCENT100_THS_ATTRIBUTE_ID:
+            app.PostEvent(example::WindowEvent::CoverTiltChanged);
+            break;
+
+        case ZCL_WC_TARGET_POSITION_LIFT_PERCENT100_THS_ATTRIBUTE_ID:
+            current = cover.Lift().PositionGet(WindowActuator::PositionUnits::Percentage100ths);
+            target = cover.Lift().TargetGet(WindowActuator::PositionUnits::Percentage100ths);
+            if(current > target) {
+                app.PostEvent(example::WindowEvent::CoverLiftDown);
+            }
+            else if(current < target) {
+                app.PostEvent(example::WindowEvent::CoverLiftUp);
+            }
+            break;
+
+        case ZCL_WC_TARGET_POSITION_TILT_PERCENT100_THS_ATTRIBUTE_ID:
+            current = cover.Tilt().PositionGet(WindowActuator::PositionUnits::Percentage100ths);
+            target = cover.Tilt().TargetGet(WindowActuator::PositionUnits::Percentage100ths);
+            if(current > target) {
+                app.PostEvent(example::WindowEvent::CoverTiltDown);
+            }
+            else if(current < target) {
+                app.PostEvent(example::WindowEvent::CoverTiltUp);
+            }
+            break;
+
+        default:
+            break;
+        }
+    }
+    else {
         EFR32_LOG("Unknown cluster ID: %d", clusterId);
     }
-}
-
-/** @brief Window Covering Cluster Init
- *
- * Cluster Init
- *
- * @param endpoint    Endpoint that is being initialized
- */
-void emberAfWindowCoveringClusterInitCallback(chip::EndpointId endpoint)
-{
-    EFR32_LOG("Window Covering Cluster init");
-}
-
-/**
- * @brief Window Covering Cluster Up/Open Command callback
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringUpOpenCallback(chip::app::Command *)
-{
-    EFR32_LOG("Window Up/Open command received");
-    AppTask::Instance().Cover().Open();
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Down/Close Command callback
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringDownCloseCallback(chip::app::Command *)
-{
-    EFR32_LOG("Window Down/Close command received");
-    AppTask::Instance().Cover().Close();
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Go To Lift Percentage Command callback
- * @param percentageLiftValue
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringGoToLiftPercentageCallback(chip::app::Command *, uint8_t percentageLiftValue)
-{
-    EFR32_LOG("Window Go To Lift Percentage command received");
-    AppTask::Instance().Cover().LiftGotoPercent(percentageLiftValue);
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Go To Lift Value Command callback
- * @param liftValue
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringGoToLiftValueCallback(chip::app::Command *, uint16_t liftValue)
-{
-    EFR32_LOG("Window Go To Lift Value command received");
-    AppTask::Instance().Cover().LiftGotoValue(liftValue);
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Go To Tilt Percentage Command callback
- * @param percentageTiltValue
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringGoToTiltPercentageCallback(chip::app::Command *, uint8_t percentageTiltValue)
-{
-    EFR32_LOG("Window Go To Tilt Percentage command received");
-    AppTask::Instance().Cover().TiltGotoPercent(percentageTiltValue);
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Go To Tilt Value Command callback
- * @param tiltValue
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringGoToTiltValueCallback(chip::app::Command *, uint16_t tiltValue)
-{
-    EFR32_LOG("Window Go To Tilt Value command received");
-    AppTask::Instance().Cover().TiltGotoValue(tiltValue);
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
-}
-
-/**
- * @brief Window Covering Cluster Stop Command callback
- */
-
-bool emberAfWindowCoveringClusterWindowCoveringStopCallback(chip::app::Command *)
-{
-    EFR32_LOG("Window Stop command received");
-    AppTask::Instance().Cover().Stop();
-    emberAfSendImmediateDefaultResponse(EMBER_ZCL_STATUS_SUCCESS);
-    return true;
 }
