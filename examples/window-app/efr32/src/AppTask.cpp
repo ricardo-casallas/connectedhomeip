@@ -71,10 +71,10 @@ AppTask & AppTask::Instance()
     return sInstance;
 }
 
-WindowCover & AppTask::Cover()
-{
-    return mCover;
-}
+// WindowCover & AppTask::Cover()
+// {
+//     return mCover;
+// }
 
 int AppTask::Start()
 {
@@ -282,11 +282,11 @@ void AppTask::DispatchButtonEvent(AppEvent::EventType type, void * context)
                 if (otherButton->mIsPressed)
                 {
                     // Both buttons pressed at the same time
-                    mCover.ToggleTiltMode();
+                    ///mCover.ToggleTiltMode();
                 }
                 else
                 {
-                    mCover.StepUp();
+                    ///mCover.StepUp();
                     mResetTimer.Start(FACTORY_RESET_TRIGGER_TIMEOUT);
                 }
             }
@@ -297,11 +297,11 @@ void AppTask::DispatchButtonEvent(AppEvent::EventType type, void * context)
                 if (otherButton->mIsPressed)
                 {
                     // Both buttons pressed at the same time
-                    mCover.ToggleTiltMode();
+                    ///mCover.ToggleTiltMode();
                 }
                 else
                 {
-                    mCover.StepDown();
+                    ///mCover.StepDown();
                     mCoverTypeTimer.Start();
                 }
             }
@@ -321,37 +321,29 @@ void AppTask::DispatchButtonEvent(AppEvent::EventType type, void * context)
 
 void AppTask::DispatchWindowCoverEvent(AppEvent::EventType event, void * context)
 {
-    UpdateLog(event);
     UpdateLed(event);
     UpdateLcd(event);
     UpdateClusterState(event);
 }
 
-void AppTask::UpdateLog(AppEvent::EventType event)
-{
-    EFR32_LOG("Window Covering: %s, lift[%u..%u]:%u(%u%%), tilt[%u..%u]:%d(%d%%)", AppEvent::TypeString(event),
-              mCover.LiftOpenLimitGet(), mCover.LiftClosedLimitGet(), mCover.LiftGet(), mCover.LiftPercentGet(),
-              mCover.TiltOpenLimitGet(), mCover.TiltClosedLimitGet(), mCover.TiltGet(), mCover.TiltPercentGet());
-}
-
 void AppTask::UpdateLed(AppEvent::EventType event)
 {
-    if (mCover.IsMoving())
-    {
-        mActionLED.Blink(100);
-    }
-    else if (mCover.IsOpen())
-    {
-        mActionLED.Set(true);
-    }
-    else if (mCover.IsClosed())
-    {
-        mActionLED.Set(false);
-    }
-    else
-    {
-        mActionLED.Blink(1000);
-    }
+    // if (mCover.IsMoving())
+    // {
+    //     mActionLED.Blink(100);
+    // }
+    // else if (mCover.IsOpen())
+    // {
+    //     mActionLED.Set(true);
+    // }
+    // else if (mCover.IsClosed())
+    // {
+    //     mActionLED.Set(false);
+    // }
+    // else
+    // {
+    //     mActionLED.Blink(1000);
+    // }
 }
 
 void AppTask::UpdateLcd(AppEvent::EventType event)
@@ -360,13 +352,13 @@ void AppTask::UpdateLcd(AppEvent::EventType event)
 #ifdef DISPLAY_ENABLED
     if (mIsThreadProvisioned)
     {
-        LcdIcon icon = LcdIcon::None;
-        if (event == AppEvent::EventType::CoverTiltModeChange)
-        {
-            icon = mCover.TiltModeGet() ? LcdIcon::Tilt : LcdIcon::Lift;
-            mIconTimer.Start();
-        }
-        LcdPainter::Paint(mCover.TypeGet(), mCover.LiftGet(), mCover.TiltGet(), icon);
+        // LcdIcon icon = LcdIcon::None;
+        // if (event == AppEvent::EventType::CoverTiltModeChange)
+        // {
+        //     icon = mCover.TiltModeGet() ? LcdIcon::Tilt : LcdIcon::Lift;
+        //     mIconTimer.Start();
+        // }
+        // LcdPainter::Paint(mCover.TypeGet(), mCover.LiftGet(), mCover.TiltGet(), icon);
     }
     else
     {
@@ -377,51 +369,51 @@ void AppTask::UpdateLcd(AppEvent::EventType event)
 
 void AppTask::UpdateClusterState(AppEvent::EventType event)
 {
-    EmberAfStatus status = EMBER_ZCL_STATUS_SUCCESS;
-    switch (event)
-    {
-    // WindowCoveringType
-    case AppEvent::EventType::CoverStatusChange: {
-        uint8_t config = mCover.StatusGet();
-        status = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_CONFIG_STATUS_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
-                                       (uint8_t *) &config, ZCL_BITMAP8_ATTRIBUTE_TYPE);
-        break;
-    }
+    // EmberAfStatus status = EMBER_ZCL_STATUS_SUCCESS;
+    // switch (event)
+    // {
+    // // WindowCoveringType
+    // case AppEvent::EventType::CoverStatusChange: {
+    //     uint8_t config = mCover.StatusGet();
+    //     status = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_WC_CONFIG_STATUS_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
+    //                                    (uint8_t *) &config, ZCL_BITMAP8_ATTRIBUTE_TYPE);
+    //     break;
+    // }
 
-    // WindowCoveringType
-    case AppEvent::EventType::CoverTypeChange: {
-        uint8_t type = static_cast<uint8_t>(mCover.TypeGet());
-        status       = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_COVERING_TYPE_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
-                                       (uint8_t *) &type, ZCL_INT8U_ATTRIBUTE_TYPE);
-        break;
-    }
+    // // WindowCoveringType
+    // case AppEvent::EventType::CoverTypeChange: {
+    //     uint8_t type = static_cast<uint8_t>(mCover.TypeGet());
+    //     status       = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_WC_TYPE_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
+    //                                    (uint8_t *) &type, ZCL_INT8U_ATTRIBUTE_TYPE);
+    //     break;
+    // }
 
-    // CurrentPosition – Lift
-    case AppEvent::EventType::CoverLiftUp:
-    case AppEvent::EventType::CoverLiftDown: {
-        uint16_t lift = mCover.LiftGet();
-        status        = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_CURRENT_LIFT_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
-                                       (uint8_t *) &lift, ZCL_INT16U_ATTRIBUTE_TYPE);
-        break;
-    }
+    // // CurrentPosition – Lift
+    // case AppEvent::EventType::CoverLiftUp:
+    // case AppEvent::EventType::CoverLiftDown: {
+    //     uint16_t lift = mCover.LiftGet();
+    //     status        = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_WC_CURRENT_POSITION_LIFT_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
+    //                                    (uint8_t *) &lift, ZCL_INT16U_ATTRIBUTE_TYPE);
+    //     break;
+    // }
 
-    // Current Position – Tilt
-    case AppEvent::EventType::CoverTiltUp:
-    case AppEvent::EventType::CoverTiltDown: {
-        uint16_t tilt = mCover.TiltGet();
-        status        = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_CURRENT_TILT_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
-                                       (uint8_t *) &tilt, ZCL_INT16U_ATTRIBUTE_TYPE);
-        break;
-    }
+    // // Current Position – Tilt
+    // case AppEvent::EventType::CoverTiltUp:
+    // case AppEvent::EventType::CoverTiltDown: {
+    //     uint16_t tilt = mCover.TiltGet();
+    //     status        = emberAfWriteAttribute(1, ZCL_WINDOW_COVERING_CLUSTER_ID, ZCL_WC_CURRENT_POSITION_TILT_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
+    //                                    (uint8_t *) &tilt, ZCL_INT16U_ATTRIBUTE_TYPE);
+    //     break;
+    // }
 
-    default:
-        break;
-    }
+    // default:
+    //     break;
+    // }
 
-    if (status != EMBER_ZCL_STATUS_SUCCESS)
-    {
-        EFR32_LOG("ERR: updating ZCL %x", status);
-    }
+    // if (status != EMBER_ZCL_STATUS_SUCCESS)
+    // {
+    //     EFR32_LOG("ERR: updating ZCL %x", status);
+    // }
 }
 
 void AppTask::IconTimerCallback(AppTimer & timer, void * context)
@@ -431,7 +423,7 @@ void AppTask::IconTimerCallback(AppTimer & timer, void * context)
 
 void AppTask::CoverTypeTimerCallback(AppTimer & timer, void * context)
 {
-    AppTask::Instance().Cover().TypeCycle();
+    // AppTask::Instance().Cover().TypeCycle();
     if (ButtonHandler::Instance().mButtonDown.mIsPressed)
     {
         // The button is still pressed, keep cycling;

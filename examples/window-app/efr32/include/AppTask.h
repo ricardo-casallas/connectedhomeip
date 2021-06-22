@@ -24,7 +24,7 @@
 #include <ButtonHandler.h>
 #include <FreeRTOS.h>
 #include <LEDWidget.h>
-#include <WindowCover.h>
+#include <app/clusters/window-covering-server/window-covering-server.h>
 #include <ble/BLEEndPoint.h>
 #include <platform/CHIPDeviceLayer.h>
 #include <queue.h>
@@ -48,7 +48,7 @@ public:
     static AppTask & Instance();
 
     int Start(void);
-    WindowCover & Cover();
+    // WindowCover & Cover();
     void PostEvent(const AppEvent & event);
 
 private:
@@ -72,7 +72,7 @@ private:
     AppTimer mIconTimer;
     AppTimer mResetTimer;
     QueueHandle_t mQueue = nullptr;
-    WindowCover mCover;
+    // WindowCover mCover;
     std::string mQRCode;
     bool mResetWarning;
 
@@ -80,7 +80,7 @@ private:
     void DispatchEvents(void);
     void DispatchButtonEvent(AppEvent::EventType type, void * context);
     void DispatchWindowCoverEvent(AppEvent::EventType type, void * context);
-    void UpdateLog(AppEvent::EventType event);
+    // void UpdateLog(AppEvent::EventType event);
     void UpdateLed(AppEvent::EventType event);
     void UpdateLcd(AppEvent::EventType event);
     void UpdateClusterState(AppEvent::EventType event);

@@ -77,8 +77,8 @@ efr32_executable("window_app") {
     "src/AppTask.cpp",
     "src/AppTimer.cpp",
     "src/ButtonHandler.cpp",
-    "src/WindowCover.cpp",
-    "src/ZclCallbacks.cpp",
+    # "src/WindowCover.cpp",
+    # "src/ZclCallbacks.cpp",
     "src/main.cpp",
   ]
 
